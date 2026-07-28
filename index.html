@@ -113,7 +113,6 @@ document.getElementById("pdfForm").addEventListener("submit", async function(e){
 
 
 e.preventDefault();
-await document.fonts.ready;
 
 
 const text = document.querySelector('[name="content"]').value;
@@ -408,32 +407,31 @@ if(count % cols === 0){
 
 setTimeout(() => {
 
-html2pdf()
+    html2pdf()
 
-.set({
+    .set({
 
-filename:"練字字帖.pdf",
+        filename:"練字字帖.pdf",
 
-html2canvas:{
-    scale:2,
-    useCORS:true
-},
+        html2canvas:{
+            scale:2,
+            useCORS:true
+        },
 
-jsPDF:{
-    unit:"mm",
-    format:"a4",
-    orientation:"portrait"
-},
+        jsPDF:{
+            unit:"mm",
+            format:"a4",
+            orientation:"portrait"
+        },
 
-margin:0
+        margin:0
 
-})
+    })
 
-.from(box)
+    .from(box)
 
-.save();
+    .save();
 
-});
 
 }, 1000);
 
