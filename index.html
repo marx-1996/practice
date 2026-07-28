@@ -125,7 +125,6 @@ const rows = 12;
 
 
 const box = document.createElement("div");
-document.body.appendChild(box);
 
 box.style.width = "760px";
 
@@ -432,15 +431,7 @@ margin:0
 
 .from(box)
 
-.toPdf()
-
-.get("pdf")
-
-.then(function(pdf){
-
-    pdf.output("dataurlnewwindow");
-
-    document.body.removeChild(box);
+.save();
 
 });
 
