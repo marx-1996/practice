@@ -132,6 +132,7 @@ box.style.padding = "0px";
 box.style.fontFamily = "KaiU";
 
 box.style.display = "block";
+box.style.pageBreakInside = "avoid";
 box.style.margin = "0px auto";
 
 
@@ -382,18 +383,6 @@ if(count % cols === 0){
     rowCount++;
 
 
-    if(rowCount >= rows){
-
-        let pageBreak = document.createElement("div");
-
-        pageBreak.style.pageBreakAfter = "always";
-
-        box.appendChild(pageBreak);
-
-
-        rowCount = 0;
-
-    }
 
 }
 
@@ -420,7 +409,7 @@ if(count % cols === 0){
             orientation:"portrait"
         },
 
-        margin:0
+        margin:[0,0,0,0]
 
     })
 
