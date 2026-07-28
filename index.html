@@ -115,8 +115,8 @@ document.getElementById("pdfForm").addEventListener("submit", function(e){
 e.preventDefault();
 
 
-const text = document.querySelector('[name="content"]').value;
 
+const text = document.querySelector('[name="content"]').value;
 const style = document.querySelector('[name="style"]').value;
 
 const cols = Number(document.querySelector('[name="cols"]').value);
@@ -125,15 +125,15 @@ const rows = 12;
 
 const box = document.createElement("div");
 
+
 box.style.width = "760px";
-document.body.appendChild(box);
-box.style.padding = "0px";
+
+box.style.padding = "20px";
 
 box.style.fontFamily = "KaiU";
 
 box.style.display = "block";
-box.style.pageBreakInside = "avoid";
-box.style.margin = "0px auto";
+box.style.margin = "20px auto";
 
 
 
@@ -383,6 +383,18 @@ if(count % cols === 0){
     rowCount++;
 
 
+    if(rowCount >= rows){
+
+        let pageBreak = document.createElement("div");
+
+        pageBreak.style.pageBreakAfter = "always";
+
+        box.appendChild(pageBreak);
+
+
+        rowCount = 0;
+
+    }
 
 }
 
@@ -392,36 +404,32 @@ if(count % cols === 0){
 
 
 
-    html2pdf()
 
-    .set({
 
-        filename:"練字字帖.pdf",
+html2pdf()
 
-        html2canvas:{
-            scale:2,
-            useCORS:true
-        },
+.set({
 
-        jsPDF:{
-            unit:"mm",
-            format:"a4",
-            orientation:"portrait"
-        },
+filename:"練字字帖.pdf",
 
-        margin:[0,0,0,0]
+html2canvas:{
+    scale:3
+},
 
-    })
+jsPDF:{
+    unit:"mm",
+    format:"a4",
+    orientation:"portrait"
+},
 
-    .from(box)
+margin:0
 
-    .save();
+})
 
-    .then(() => {
+.from(box)
 
-    document.body.removeChild(box);
+.save();
 
-});
 
 
 });
