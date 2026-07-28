@@ -412,11 +412,9 @@ html2pdf()
 
 filename:"練字字帖.pdf",
 
-pagebreak:{
-    mode:["avoid-all"]
-},
 html2canvas:{
-    scale:3
+    scale:2,
+    useCORS:true
 },
 
 jsPDF:{
@@ -431,7 +429,15 @@ margin:0
 
 .from(box)
 
-.save();
+.toPdf()
+
+.get("pdf")
+.then(function(pdf){
+
+    pdf.save("練字字帖.pdf");
+
+});
+
 .then(() => {
     document.body.removeChild(box);
 });
