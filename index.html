@@ -109,15 +109,15 @@ max="20">
 <script>
 
 
-document.getElementById("pdfForm").addEventListener("submit", function(e){
+document.getElementById("pdfForm").addEventListener("submit", async function(e){
 
 
 e.preventDefault();
-
+await document.fonts.ready;
 
 
 const text = document.querySelector('[name="content"]').value;
-alert(text);
+
 const style = document.querySelector('[name="style"]').value;
 
 const cols = Number(document.querySelector('[name="cols"]').value);
@@ -407,6 +407,8 @@ if(count % cols === 0){
 
 
 
+setTimeout(() => {
+
 html2pdf()
 
 .set({
@@ -438,13 +440,11 @@ margin:0
 
     pdf.output("dataurlnewwindow");
 
-})
-
-.then(() => {
-
     document.body.removeChild(box);
 
 });
+
+}, 1000);
 
 
 });
