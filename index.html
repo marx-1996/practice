@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
@@ -9,6 +8,22 @@
 <title>
 練字 PDF 產生器
 </title>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
+
+<style>
+
+@font-face {
+
+    font-family: "KaiU";
+
+    src: url("kaiu.ttf");
+
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 </head>
 
@@ -21,20 +36,14 @@
 </h1>
 
 
-
-<form action="/create" method="post">
+<form id="pdfForm">
 
 
 <textarea
-
 name="content"
-
 rows="15"
-
 cols="50"
-
 placeholder="請輸入文章">
-
 </textarea>
 
 
@@ -47,20 +56,14 @@ placeholder="請輸入文章">
 
 
 <input
-
 type="number"
-
 name="cols"
-
 value="10"
-
 min="1"
-
 max="20">
 
 
 <br><br>
-
 
 
 <label>
@@ -70,34 +73,21 @@ max="20">
 
 <select name="style">
 
-
 <option value="mi">
-
 米字格
-
 </option>
-
 
 <option value="tian">
-
 田字格
-
 </option>
-
 
 <option value="jiu">
-
 九宮格
-
 </option>
-
 
 <option value="blank">
-
 空白格
-
 </option>
-
 
 </select>
 
@@ -105,22 +95,348 @@ max="20">
 <br><br>
 
 
-
-
-
-
-
-<br><br>
-
-
-<button>
-
+<button type="submit">
 產生 PDF
-
 </button>
 
 
 </form>
+
+
+
+
+
+<script>
+
+
+document.getElementById("pdfForm").addEventListener("submit", function(e){
+
+
+e.preventDefault();
+
+
+
+const text = document.querySelector('[name="content"]').value;
+const style = document.querySelector('[name="style"]').value;
+
+const cols = Number(document.querySelector('[name="cols"]').value);
+const rows = 12;
+
+
+const box = document.createElement("div");
+
+
+box.style.width = "760px";
+
+box.style.padding = "20px";
+
+box.style.fontFamily = "KaiU";
+
+box.style.display = "block";
+box.style.margin = "20px auto";
+
+
+
+
+
+const chars = text.replace(/\s/g,"").split("");
+
+
+
+let count = 0;
+let rowCount = 0;
+
+chars.forEach(char => {
+
+
+
+const cell = document.createElement("div");
+
+
+// 格子
+
+cell.style.width = "70px";
+
+cell.style.height = "70px";
+
+cell.style.display = "inline-flex";
+
+cell.style.position = "relative";
+
+cell.style.boxSizing = "border-box";
+
+cell.style.alignItems = "center";
+
+cell.style.justifyContent = "center";
+
+cell.style.margin = "1px";
+
+cell.style.overflow = "hidden";
+
+
+
+
+
+// 外框
+
+let border = document.createElement("div");
+
+
+border.style.position="absolute";
+
+border.style.left="0";
+
+border.style.top="0";
+
+border.style.width="100%";
+
+border.style.height="100%";
+
+border.style.boxSizing="border-box";
+
+border.style.border="1px solid #999";
+
+
+
+
+
+// 中線
+
+let vertical=document.createElement("div");
+
+
+vertical.style.position="absolute";
+
+vertical.style.left="50%";
+
+vertical.style.top="0";
+
+vertical.style.height="100%";
+
+vertical.style.borderLeft="1px solid #cccccc";
+
+
+
+
+
+let horizontal=document.createElement("div");
+
+
+horizontal.style.position="absolute";
+
+horizontal.style.top="50%";
+
+horizontal.style.left="0";
+
+horizontal.style.width="100%";
+
+horizontal.style.borderTop="1px solid #cccccc";
+
+
+
+
+
+// 斜線
+
+let slash1=document.createElement("div");
+
+
+slash1.style.position="absolute";
+
+slash1.style.width="100px";
+
+slash1.style.borderTop="1px solid #cccccc";
+
+slash1.style.transform="rotate(45deg)";
+
+
+
+
+
+let slash2=document.createElement("div");
+
+
+slash2.style.position="absolute";
+
+slash2.style.width="100px";
+
+slash2.style.borderTop="1px solid #cccccc";
+
+slash2.style.transform="rotate(-45deg)";
+
+
+
+
+
+// 文字
+
+let span=document.createElement("span");
+
+span.textContent=char;
+
+span.style.position="absolute";
+
+span.style.left="0";
+
+span.style.top="0px";
+
+span.style.width="100%";
+
+span.style.height="70px";
+
+span.style.display="flex";
+
+span.style.alignItems="center";
+
+span.style.justifyContent="center";
+
+span.style.zIndex="5";
+
+span.style.fontSize="55px";
+
+span.style.color="#cccccc";
+
+span.style.fontFamily="KaiU";
+
+span.style.lineHeight="70px";
+
+
+
+
+
+cell.appendChild(border);
+
+
+
+if(style === "mi"){
+
+    cell.appendChild(vertical);
+    cell.appendChild(horizontal);
+    cell.appendChild(slash1);
+    cell.appendChild(slash2);
+
+}
+
+
+if(style === "tian"){
+
+    cell.appendChild(vertical);
+    cell.appendChild(horizontal);
+
+}
+
+
+if(style === "jiu"){
+
+    cell.appendChild(vertical);
+    cell.appendChild(horizontal);
+
+    // 第二條直線
+    let v2 = document.createElement("div");
+
+    v2.style.position="absolute";
+    v2.style.left="66%";
+    v2.style.top="0";
+    v2.style.height="100%";
+    v2.style.borderLeft="1px solid #cccccc";
+
+    cell.appendChild(v2);
+
+
+    // 第二條橫線
+    let h2 = document.createElement("div");
+
+    h2.style.position="absolute";
+    h2.style.top="66%";
+    h2.style.left="0";
+    h2.style.width="100%";
+    h2.style.borderTop="1px solid #cccccc";
+
+    cell.appendChild(h2);
+
+}
+
+
+if(style === "blank"){
+
+    // 不加入內線
+
+}
+
+cell.appendChild(span);
+
+
+
+box.appendChild(cell);
+
+
+
+count++;
+
+
+// 每行字數換行
+
+if(count % cols === 0){
+
+    box.appendChild(document.createElement("br"));
+
+    rowCount++;
+
+
+    if(rowCount >= rows){
+
+        let pageBreak = document.createElement("div");
+
+        pageBreak.style.pageBreakAfter = "always";
+
+        box.appendChild(pageBreak);
+
+
+        rowCount = 0;
+
+    }
+
+}
+
+
+
+});
+
+
+
+
+
+html2pdf()
+
+.set({
+
+filename:"練字字帖.pdf",
+
+html2canvas:{
+    scale:3
+},
+
+jsPDF:{
+    unit:"mm",
+    format:"a4",
+    orientation:"portrait"
+},
+
+margin:0
+
+})
+
+.from(box)
+
+.save();
+
+
+
+});
+
+
+
+</script>
 
 
 </body>
