@@ -433,14 +433,17 @@ margin:0
 .toPdf()
 
 .get("pdf")
+
 .then(function(pdf){
 
     pdf.output("dataurlnewwindow");
 
-});
+})
 
 .then(() => {
+
     document.body.removeChild(box);
+
 });
 
 
