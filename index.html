@@ -117,6 +117,7 @@ e.preventDefault();
 
 
 const text = document.querySelector('[name="content"]').value;
+alert(text);
 const style = document.querySelector('[name="style"]').value;
 
 const cols = Number(document.querySelector('[name="cols"]').value);
@@ -434,7 +435,7 @@ margin:0
 .get("pdf")
 .then(function(pdf){
 
-    pdf.save("練字字帖.pdf");
+    pdf.output("dataurlnewwindow");
 
 });
 
