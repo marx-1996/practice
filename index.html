@@ -124,16 +124,16 @@ const rows = 12;
 
 
 const box = document.createElement("div");
-
+document.body.appendChild(box);
 
 box.style.width = "760px";
 
-box.style.padding = "20px";
+box.style.padding = "0px";
 
 box.style.fontFamily = "KaiU";
 
 box.style.display = "block";
-box.style.margin = "20px auto";
+box.style.margin = "0px auto";
 
 
 
@@ -412,6 +412,9 @@ html2pdf()
 
 filename:"練字字帖.pdf",
 
+pagebreak:{
+    mode:["avoid-all"]
+},
 html2canvas:{
     scale:3
 },
@@ -429,7 +432,9 @@ margin:0
 .from(box)
 
 .save();
-
+.then(() => {
+    document.body.removeChild(box);
+});
 
 
 });
