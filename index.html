@@ -124,7 +124,7 @@ const rows = 12;
 
 
 const box = document.createElement("div");
-
+document.body.appendChild(box);
 box.style.width = "760px";
 
 box.style.padding = "0px";
@@ -403,10 +403,6 @@ if(count % cols === 0){
 
 
 
-
-
-setTimeout(() => {
-
     html2pdf()
 
     .set({
@@ -432,8 +428,11 @@ setTimeout(() => {
 
     .save();
 
+    .then(() => {
 
-}, 1000);
+    document.body.removeChild(box);
+
+});
 
 
 });
