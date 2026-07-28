@@ -109,7 +109,7 @@ max="20">
 <script>
 
 
-document.getElementById("pdfForm").addEventListener("submit", async function(e){
+document.getElementById("pdfForm").addEventListener("submit", function(e){
 
 
 e.preventDefault();
@@ -124,9 +124,9 @@ const rows = 12;
 
 
 const box = document.createElement("div");
-document.body.appendChild(box);
-box.style.width = "760px";
 
+box.style.width = "760px";
+document.body.appendChild(box);
 box.style.padding = "0px";
 
 box.style.fontFamily = "KaiU";
