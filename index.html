@@ -120,16 +120,20 @@ const text = document.querySelector('[name="content"]').value;
 const style = document.querySelector('[name="style"]').value;
 
 const cols = Number(document.querySelector('[name="cols"]').value);
-const rows = 12;
+const rows = 10;
 
 
 const box = document.createElement("div");
 
-box.style.width = "760px";
-box.style.padding = "0px";
+// A4 比例（≈ 794 x 1123 px）
+box.style.width = "794px";
+box.style.height = "1123px";  // 固定高度
+box.style.padding = "20px";
 box.style.fontFamily = "KaiU";
 box.style.display = "block";
-box.style.margin = "0px auto";
+box.style.margin = "0 auto";  // 取消上方 20px 外距，避免頂部空白
+box.style.boxSizing = "border-box";
+
 
 
 
@@ -150,9 +154,9 @@ const cell = document.createElement("div");
 
 // 格子
 
-cell.style.width = "70px";
+cell.style.width = "65px";
 
-cell.style.height = "70px";
+cell.style.height = "65px";
 
 cell.style.display = "inline-flex";
 
@@ -164,7 +168,7 @@ cell.style.alignItems = "center";
 
 cell.style.justifyContent = "center";
 
-cell.style.margin = "1px";
+cell.style.margin = "0.5px";
 
 cell.style.overflow = "hidden";
 
@@ -378,18 +382,50 @@ if(count % cols === 0){
     rowCount++;
 
 
+    const container = document.createElement("div"); // 整份文件容器
+container.style.width = "794px";
+container.style.margin = "0 auto";
+
+// 建立第一頁
+let page = document.createElement("div");
+page.style.width = "794px";
+page.style.height = "1123px";
+page.style.padding = "20px";
+page.style.boxSizing = "border-box";
+page.style.fontFamily = "KaiU";
+
+container.appendChild(page);
+
+let count = 0;
+let rowCount = 0;
+
+chars.forEach(char => {
+  // 建立 cell (和你原來的一樣)
+  const cell = document.createElement("div");
+  // ... 你的 cell 內部線條與文字設定 ...
+  
+  page.appendChild(cell);
+  count++;
+
+  if(count % cols === 0){
+    page.appendChild(document.createElement("br"));
+    rowCount++;
+
+    // 如果滿了 rows 行，就開新頁
     if(rowCount >= rows){
+      page = document.createElement("div");
+      page.style.width = "794px";
+      page.style.height = "1123px";
+      page.style.padding = "20px";
+      page.style.boxSizing = "border-box";
+      page.style.fontFamily = "KaiU";
 
-        let pageBreak = document.createElement("div");
+      container.appendChild(page);
 
-        pageBreak.style.pageBreakAfter = "always";
-
-        box.appendChild(pageBreak);
-
-
-        rowCount = 0;
-
+      rowCount = 0;
     }
+  }
+});
 
 }
 
@@ -402,26 +438,18 @@ if(count % cols === 0){
 
 
 html2pdf()
-
-.set({
-
-filename:"練字字帖.pdf",
-margin:0
-html2canvas:{
-    scale:3
-},
-
-jsPDF:{
-    unit:"mm",
-    format:"a4",
-    orientation:"portrait"
-},
-
-})
-
-.from(box)
-
-.save();
+  .set({
+    filename:"練字字帖.pdf",
+    html2canvas:{ scale:3 },
+    jsPDF:{
+      unit:"mm",
+      format:"a4",
+      orientation:"portrait"
+    },
+    margin:0
+  })
+  .from(container)
+  .save();
 
 
 
